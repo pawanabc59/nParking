@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<script src="http://maps.google.com/maps/api/js?sensor=false"
+          type="text/javascript"></script>
+	<style type="text/css">
+
+		.card{
+			margin-right: 9vh;
+			margin-bottom: 10vh;
+			margin-top: 5vh;
+		}
+
+/*body : style="background: #ffbb33;"*/
+/*card : background: #ff751a;*/
+
+	</style>
+</head>
+<body>
+
+	<div>
+
+		<% include navbar.ejs ;%>
+
+	<div>
+
+	<div>
+		<div class="container">
+		  	<h2 style="margin-top: 12vh;">Search Parking Space</h2>
+		  	<input class="form-control" id="myInput" type="text" placeholder="Search..">
+		  	<div id="searchEvents" class="mt-3">
+		    	<div class="container-fluid row" style="justify-content: center;">
+		    	<% results.forEach(function(result) {%>
+				  <div class="card" style="width:290px">
+				    <img class="card-img-top" src="<%= result.image %>" alt="Card image" style="width:100%">
+				    <div class="card-body">
+				      <h4 class="card-title row"><strong><%= result.title %></strong></h4>
+				      <p class="card-text row"><strong>Address : </strong><%= result.address %></p>
+				      <p class="card-text row"><strong>Slots : </strong><%= result.slot %></p>
+				      <p class="card-text row"><strong>Start Time : </strong><%= result.startTime %></p>
+				      <p class="card-text row"><strong>End Time : </strong><%= result.endTime %></p>
+				      <h5 class="card-text row"><strong>Slots Left: </strong><%= result.slotsLeft %></h5>
+				      <% if (roles == "carOwner") {%>
+				      	<button class="btn btn-primary stretched-link" type="button" data-toggle="modal" data-target="#bookSpace" onclick = "addToBook('<%= result.title %>',' <%= result.slot %>');">Book Space</button>
+				      	
+				      <% } else { %>
+				      	<button class="btn btn-primary stretched-link" type="button" disabled>Book Space</button>
+				      <% } %>
+				    </div>
+				  </div>
+				<% }); %>
+				</div>
+
+		  	</div>
+
+		  	<div>
+		  		<div class="modal" id="bookSpace">
+				  <div class="modal-dialog modal-lg">
+				    <div class="modal-content">
+
+				      <!-- Modal Header -->
+				      <div class="modal-header">
+				        <h4 class="modal-title" id="modalTitle"></h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				      </div>
+
+				      <!-- Modal body -->
+				      <div class="modal-body">
+				        
+				      <form action="/carOwner/bookPlace" method="post" enctype="maltipart/form-data">
+
+				      	<div class="row">
+
+				      		<div>
+				      			<input type="hidden" name="titleOfPlace" id="titleOfPlace">
+				      			<input type="hidden" name="slotsInPlace" id="slotsInPlace">
+				      		</div>
+							<div class="form-group row" style="margin-left: 3vh;">
+							    <label for="arrivalTime">Arrival Time :</label>
+							    <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime"  required>
+							    
+							</div>
+							<div class="form-group row" style="margin-left: 20vh;">
+							    <label for="closingTime">Departure Time:</label>
+							    <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" placeholder="Select departure time" required>
+							    
+							</div>
+						</div>
+				      </div>
+
+				      <!-- Modal footer -->
+				      <div class="modal-footer">
+				      	<button type="submit" class="btn btn-success">Book Space</button>
+				        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				      </div>
+
+				      </form>
+
+				    </div>
+				  </div>
+				</div>
+
+		  	</div>
+
+		</div>
+
+	</div>
+	<div id="map" style="height: 400px; padding-top: 25px;"></div>
+
+	<div>
+		
+		<% include footer.ejs ;%>
+
+	</div>
+
+</body>
+
+<script>
+var locations = [
+	['Bondi Beach', -33.890542, 151.274856, 4],
+	['Coogee Beach', -33.923036, 151.259052, 5],
+	['Cronulla Beach', -34.028249, 151.157507, 3],
+	['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+	['Maroubra Beach', -33.950198, 151.259302, 1],
+	['Don Bosco Institute of Technology',19.0813,72.8886,6]
+];
+
+var map = new google.maps.Map(document.getElementById('map'), {
+	zoom: 10,
+	center: new google.maps.LatLng(-33.92, 151.25),
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+
+var marker, i;
+
+for (i = 0; i < locations.length; i++) {
+	marker = new google.maps.Marker({
+		position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+		map: map
+	});
+
+	google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		return function() {
+			infowindow.setContent(locations[i][0]);
+			infowindow.open(map, marker);
+		}
+	})(marker, i));
+}
+
+	$(document).ready(function(){
+	  $("#myInput").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#searchEvents .card").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+
+	function addToBook(title, slot){
+		document.getElementById("modalTitle").innerHTML = "Book Space at "+title;
+		document.getElementById("titleOfPlace").value = title;
+		document.getElementById("slotsInPlace").value = slot;
+	}
+	</script>
+
+</html>
