@@ -5,13 +5,13 @@ function sendMail(name,password,email,role){
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'p9833831475@gmail.com',
-      pass: '56987412365'
+      user: 'your_email@gmail.com',
+      pass: 'your_email_password'
     }
   });
 
   var mailOptions = {
-    from: 'Admin <p9833831475@gmail.com>',
+    from: 'Admin <your_email@gmail.com>',
     to: email,
     subject: 'Account created as '+role+' from Online Parking',
     text: 'Hey '+name+', Admin here. \nYou have been successfully registered on Parking and your password is '+password+'.\n\nThanks and Regards,Admin :)'
@@ -31,13 +31,13 @@ function placeAddedMail(email, title, address, slots, startTime, endTime){
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'p9833831475@gmail.com',
-      pass: '56987412365'
+      user: 'your_email@gmail.com',
+      pass: 'your_email_password'
     }
   });
 
   var mailOptions = {
-    from: 'Admin <p9833831475@gmail.com>',
+    from: 'Admin <your_email@gmail.com>',
     to: email,
     subject: 'Place Added Successfully - '+title+'.',
     text: 'Hey Owner, Admin here. \n You have successfully registered your place namely '+title+' with the Online Parking .\nYour place is located at '+address+'.\n Starting Time of your place is '+startTime+' and Ending Time is '+endTime+'. \nYour Place have total of '+slots+' slots. \nAll the best for the future.\n\n\nThanks and Regards,Admin :)'
@@ -57,13 +57,13 @@ function bookPlaceMail(userEmail, titleOfPlace, slotsInPlace, arrivalTime, depar
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'p9833831475@gmail.com',
-      pass: '56987412365'
+      user: 'your_email@gmail.com',
+      pass: 'your_email_password'
     }
   });
 
   var mailOptions = {
-    from: 'Admin <p9833831475@gmail.com>',
+    from: 'Admin <your_email@gmail.com>',
     to: userEmail,
     subject: 'Booked Parking slot at - '+titleOfPlace+' ',
     text: 'Hey User, Admin here. \n You have booked a parking slot at '+titleOfPlace+'. The place has total of '+slotsInPlace+' slots.\n You should arrive at place by '+arrivalTime+' and should leave the place by '+departureTime+'. Otherwise significant charges will be taken by the place owner. \nAll the best for the future.\n Happy Parking ;)\n\nThanks and Regards,Admin :)',
