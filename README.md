@@ -2,8 +2,11 @@
 A non-Iot based solution which lets user to find the parking space nearby them.
 
 ## Process
-1.
-
+1.First the landlord will upload his parking area information on website i.e address and what type of vehicle should be parked there.
+2.User will register themselves on website and will be able to see various parking site.
+3.They will be able to search parking spots near them.
+4.Once parking spot selected user can book the place so that when they arrive they can park there vehicle.
+5.User will be able to see beforehand that wheather the parking spot is full or empty.
 
 ## Installation
 [Download the XAMPP](https://www.apachefriends.org/download.html)
